@@ -1,18 +1,43 @@
+<script setup lang="ts">
+import NavBar from "@/components/NavBar.vue";
+import HomeBackground from "@/components/HomeBackground.vue";
+import IntroductionHome from "@/components/IntroductionHome.vue";
+</script>
+
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <NavBar />
+    <div class="content">
+      <section class="elementor-top-section">
+        <HomeBackground />
+        <IntroductionHome />
+      </section>
+      <section class="elementor-content-section">
+        <div class="text">zzz</div>
+      </section>
+    </div>
   </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+<style lang="scss" scoped>
+.home {
+  width: 100%;
 
-@Options({
-  components: {
-    HelloWorld,
-  },
-})
-export default class HomeView extends Vue {}
-</script>
+  .content {
+    width: 100%;
+  }
+  .elementor-top-section {
+    height: 100vh;
+    // background-color: #f6f8fa;
+  }
+
+  .elementor-content-section {
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+  .text {
+    height: 500px;
+  }
+}
+</style>
