@@ -1,28 +1,62 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 
 const navList = ref([
   {
     link: "/",
     title: "Home",
-    id: "home",
+    id: "#home",
   },
   {
     link: "/about",
     title: "About",
-    id: "about",
+    id: "#about",
   },
   {
-    link: "/service",
-    title: "Service",
-    id: "service",
+    link: "/skills",
+    title: "Skills",
+    id: "#skills",
+  },
+  {
+    link: "/portfolio",
+    title: "Portfolio",
+    id: "#portfolio",
   },
   {
     link: "/contact",
     title: "Contact",
-    id: "contact",
+    id: "#contact",
   },
 ]);
+const section = ref<HTMLElement[]>();
+const navLinks = ref<Element[]>();
+const isMenu = ref(true);
+
+const handleScroll = () => {
+  section.value?.forEach((sec) => {
+    let top = window.scrollY;
+    let offset = sec.offsetTop - 150;
+    let height = sec.offsetHeight;
+    let id = sec.getAttribute("id");
+
+    if ((top > offset || top == offset) && top < offset + height) {
+      navLinks.value?.forEach((link) => {
+        link.classList.remove("active");
+        document.querySelector(`.item[href*=${id}]`)?.classList.add("active");
+      });
+    }
+  });
+  isMenu.value = true;
+};
+
+onMounted(() => {
+  section.value = [...document.querySelectorAll("section")];
+  navLinks.value = [...document.querySelectorAll(".item")];
+  window.addEventListener("scroll", handleScroll);
+});
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <template>
@@ -30,31 +64,43 @@ const navList = ref([
     <router-link to="/" class="logo">
       <img src="@/assets/images/logo.png" alt="logo" />
     </router-link>
-    <div class="nav-items">
-      <router-link to="/" class="item" v-for="nav in navList" :key="nav.id">
+    <i
+      :class="['pi', isMenu ? 'pi-align-justify' : 'pi-times']"
+      id="menu-icon"
+      @click="isMenu = !isMenu"
+    ></i>
+    <div :class="['nav-items', !isMenu && 'active']">
+      <a class="item" v-for="nav in navList" :href="nav.id" :key="nav.id">
         <span>{{ nav.title.toUpperCase() }}</span>
-      </router-link>
+      </a>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .nav {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: var(--height-header);
-  padding: 0 10rem;
-  background: none;
-  background-image: none;
-  z-index: 4;
+  padding: 2rem 9%;
+  background-color: var(--bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
 
   .logo {
     img {
-      width: 6rem;
+      width: 12rem;
     }
+  }
+
+  #menu-icon {
+    font-size: 3.6rem;
+    color: var(--text-color);
+    display: none;
+    cursor: pointer;
   }
 
   .nav-items {
@@ -63,39 +109,51 @@ const navList = ref([
     align-items: center;
 
     .item {
-      position: relative;
-      text-decoration: none;
-      color: var(--black-color);
+      color: var(--text-color);
       margin: 0 0.75rem;
-      font-size: 0.9rem;
+      font-size: 1.7rem;
       padding: 0.5rem 1rem;
-      border-radius: 5px;
+    }
+    .item:hover,
+    .item.active {
+      color: var(--main-color);
+    }
+  }
+}
 
-      span {
-        position: relative;
-        text-align: center;
-        z-index: 2;
-        transition: all 0.3s ease-in-out;
-      }
+// Responsive css
+
+@media (max-width: 991px) {
+  .nav {
+    padding: 2rem 3%;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    #menu-icon {
+      display: block;
     }
-    .item::after {
-      content: " ";
-      width: 0%;
-      height: 100%;
-      background: var(--primary-color);
-      border-radius: 5px;
+    .nav-items {
       position: absolute;
-      transition: all 0.4s ease-in-out;
-      right: 0;
-      top: 0;
-    }
-    .item:hover::after {
-      right: auto;
+      display: block;
+      top: 100%;
       left: 0;
       width: 100%;
+      padding: 1rem 3%;
+      background: var(--bg-color);
+      border-top: 0.1rem solid rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+      display: none;
+
+      .item {
+        display: block;
+        font-size: 2rem;
+        margin: 3rem 0;
+      }
     }
-    .item:hover span {
-      color: var(--white-color);
+    .nav-items.active {
+      display: block;
     }
   }
 }
