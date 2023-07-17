@@ -35,16 +35,6 @@ const objtive = ref(
   background-color: var(--second-bg-color);
   padding-bottom: 6rem;
 
-  //   h2 {
-  //     font-size: 5rem;
-  //     margin-bottom: 3rem;
-  //     text-align: center;
-
-  //     span {
-  //       color: var(--main-color);
-  //     }
-  //   }
-
   .about-img {
     position: relative;
     width: 25rem;
@@ -74,17 +64,101 @@ const objtive = ref(
       border-bottom: 0.2rem solid var(--second-bg-color);
       border-left: 0.2rem solid var(--main-color);
       border-right: 0.2rem solid var(--main-color);
+      animation: aboutSpinner1 8s linear infinite;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(0);
+      width: 100%;
+      height: 100%;
+      padding: 1rem;
+      border-radius: 60%;
+      border-top: 0.2rem solid var(--second-bg-color);
+      border-bottom: 0.2rem solid var(--second-bg-color);
+      border-left: 0.2rem solid var(--main-color);
+      border-right: 0.2rem solid var(--main-color);
+      animation: aboutSpinner2 6s linear infinite;
+    }
+
+    @keyframes aboutSpinner1 {
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+    @keyframes aboutSpinner2 {
+      100% {
+        transform: translate(-50%, -50%) rotate(-360deg);
+      }
     }
   }
   .about-content {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     h3 {
+      text-align: left;
+      position: relative;
+      width: auto;
       font-size: 2.6rem;
+      font-weight: 700;
+      color: transparent;
+      -webkit-text-stroke: 0.7px var(--main-color);
+      background-image: linear-gradient(var(--main-color), var(--main-color));
+      background-repeat: no-repeat;
+      background-clip: text;
+      background-position: 0 0;
+      animation: aboutText 6s linear infinite;
+      animation-delay: 2s;
+    }
+    h3::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      border-right: 2px solid var(--main-color);
+      animation: aboutCursorText 6s linear infinite;
+      animation-delay: 2s;
     }
     p {
       font-size: 1.8rem;
       margin: 2rem 0 3rem;
+    }
+
+    @keyframes aboutText {
+      0%,
+      10%,
+      100% {
+        background-position: -33rem 0;
+      }
+      65%,
+      85% {
+        background-position: 0 0;
+      }
+    }
+    @keyframes aboutCursorText {
+      0%,
+      10%,
+      100% {
+        width: 0;
+      }
+      65%,
+      78%,
+      85% {
+        width: 100%;
+        opacity: 1;
+      }
+      75%,
+      81% {
+        opacity: 0;
+      }
     }
   }
 }

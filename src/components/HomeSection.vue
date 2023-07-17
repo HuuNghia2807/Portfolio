@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
+import Typed from "typed.js";
 
 const info = reactive({
   name: "NGUYEN HUU NGHIA",
@@ -21,6 +22,16 @@ const info = reactive({
     },
   ],
 });
+
+onMounted(() => {
+  new Typed(".multiple-text", {
+    strings: ["Frontend Developer", "Software Engineer"],
+    typeSpeed: 100,
+    backSpeed: 100,
+    backDelay: 1000,
+    loop: true,
+  });
+});
 </script>
 
 <template>
@@ -28,7 +39,7 @@ const info = reactive({
     <div class="home-content">
       <h3>Hello, My name is</h3>
       <h1>{{ info.name }}</h1>
-      <h3 class="job">{{ info.job }} <span>Frontend Developer</span></h3>
+      <h3 class="job">{{ info.job }} <span class="multiple-text"></span></h3>
       <p>{{ info.intro }}</p>
       <div class="social-media">
         <a
@@ -42,7 +53,13 @@ const info = reactive({
       <span class="btn">Download CV</span>
     </div>
     <div class="home-img">
-      <img src="@/assets/images/avt-01.jpg" alt="" />
+      <div class="glowing-circle">
+        <span></span>
+        <span></span>
+        <div class="image">
+          <img src="@/assets/images/avt-01.jpg" alt="" />
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -101,8 +118,63 @@ const info = reactive({
     display: flex;
     justify-content: center;
     align-items: center;
-    img {
-      width: 35vw;
+
+    .glowing-circle {
+      position: relative;
+      width: 45rem;
+      height: 45rem;
+      background: yellowgreen;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: floatImage 4s ease-in-out infinite;
+
+      &::after {
+        content: "";
+        position: absolute;
+        width: 42.5rem;
+        height: 42.5rem;
+        background: var(--bg-color);
+        border-radius: 50%;
+      }
+
+      span {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(#1967dc, var(--main-color));
+        border-radius: 50%;
+      }
+
+      .image {
+        position: relative;
+        width: 43rem;
+        height: 43rem;
+        border-radius: 50%;
+        z-index: 1;
+        overflow: hidden;
+
+        img {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          object-fit: cover;
+          max-width: 43rem;
+        }
+      }
+    }
+
+    @keyframes floatImage {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-2.4rem);
+      }
+      100% {
+        transform: translateY(0);
+      }
     }
   }
 }
@@ -122,17 +194,37 @@ const info = reactive({
       }
     }
 
-    .home-img img {
-      width: 65vw;
-      margin-top: 4rem;
+    .home-img {
+      .glowing-circle {
+        margin-top: 4rem;
+        .image img {
+          width: 100%;
+        }
+      }
     }
   }
 }
 
 @media (max-width: 365px) {
   .home {
-    .home-img img {
-      width: 80vw;
+    .home-img {
+      .glowing-circle {
+        width: 30rem;
+        height: 30rem;
+
+        .image {
+          width: 28rem;
+          height: 28rem;
+          img {
+            max-width: 28rem;
+          }
+        }
+        &::after {
+          content: "";
+          width: 28rem;
+          height: 28rem;
+        }
+      }
     }
   }
 }

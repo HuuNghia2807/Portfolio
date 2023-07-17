@@ -63,8 +63,9 @@ const skillInfo = ref([
         class="skills-column"
         v-for="(skill, i) in skillInfo"
         :key="skill.title + i"
+        :id="`skills-column${i}`"
       >
-        <h3 class="title">{{ skill.title }}</h3>
+        <h3 class="skills-title">{{ skill.title }}</h3>
         <div class="skills-box">
           <div class="skills-content">
             <div
@@ -100,7 +101,7 @@ const skillInfo = ref([
     .skills-column {
       flex: 1 1 40rem;
 
-      .title {
+      .skills-title {
         font-size: 2.5rem;
         margin: 0 0 1.5rem;
         text-align: start;
