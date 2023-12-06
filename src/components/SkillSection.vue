@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 
 const skillInfo = ref([
   {
@@ -53,13 +53,89 @@ const skillInfo = ref([
     ],
   },
 ]);
+const listSkill = ref([
+  {
+    name: "HTML, CSS",
+    width: "90%",
+  },
+  {
+    name: "Javascript",
+    width: "80%",
+  },
+  {
+    name: "Typescript",
+    width: "70%",
+  },
+  {
+    name: "PHP",
+    width: "50%",
+  },
+  {
+    name: "Java",
+    width: "50%",
+  },
+  {
+    name: "Git",
+    width: "90%",
+  },
+  {
+    name: "Figma",
+    width: "80%",
+  },
+  {
+    name: "Communicate",
+    width: "100%",
+  },
+  {
+    name: "Teamwork",
+    width: "100%",
+  },
+  {
+    name: "Responsibility",
+    width: "100%",
+  },
+]);
+
+onMounted(() => {
+  const balls = document.querySelectorAll(".ballon");
+  const screenWidth = window.innerWidth - 300;
+  const screenHeight = window.innerHeight - 100;
+  const speed = 2;
+  const circleSize = 160;
+  let x = screenWidth / 2 - circleSize / 2;
+  let y = screenHeight / 2 - circleSize / 2;
+  let directionX = 1; // Initial X direction (1 for right, -1 for left)
+  let directionY = 1; // Initial Y direction (1 for down, -1 for up)
+
+  function moveCircle(ball: Element) {
+    // Update circle position
+    x += speed * directionX;
+    y += speed * directionY;
+
+    // Check boundaries
+    if (x < 0 || x + circleSize > screenWidth) {
+      directionX *= -1; // Reverse X direction on hitting boundaries
+    }
+
+    if (y < 0 || y + circleSize > screenHeight) {
+      directionY *= -1; // Reverse Y direction on hitting boundaries
+    }
+
+    // Update circle position
+    ball.style.left = x + "px";
+    ball.style.top = y + "px";
+  }
+  balls.forEach((ele) => {
+    setInterval(() => moveCircle(ele), 80);
+  });
+});
 </script>
 
 <template>
   <section class="skills" id="skills">
     <h2 class="title">My <span>Skills</span></h2>
     <div class="skills-row">
-      <div
+      <!-- <div
         class="skills-column"
         v-for="(skill, i) in skillInfo"
         :key="skill.title + i"
@@ -82,6 +158,9 @@ const skillInfo = ref([
             </div>
           </div>
         </div>
+      </div> -->
+      <div class="ballon" v-for="skill in listSkill" :key="skill.name">
+        <span class="text">{{ skill.name.toUpperCase() }}</span>
       </div>
     </div>
   </section>
@@ -89,15 +168,37 @@ const skillInfo = ref([
 
 <style lang="scss" scoped>
 .skills {
-  min-height: auto;
+  min-height: 100vh;
   padding-bottom: 7rem;
   background-color: var(--bg-color);
 
   .skills-row {
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
-    gap: 5rem;
+    // justify-content: center;
+    // flex-wrap: wrap;
+    // gap: 5rem;
+    // padding-top: 5rem;
 
+    .ballon {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff;
+      border-radius: 50%;
+      // min-width: 14rem;
+      // min-height: 14rem;
+      width: 160px;
+      height: 160px;
+
+      span {
+        color: red;
+        font-size: 1.8rem;
+        font-weight: 600;
+        padding: 2rem;
+      }
+    }
     .skills-column {
       flex: 1 1 40rem;
 

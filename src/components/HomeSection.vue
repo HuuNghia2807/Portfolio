@@ -13,15 +13,33 @@ const info = reactive({
       icon: "pi-facebook",
     },
     {
-      link: "#",
+      link: "https://github.com/HuuNghia2807",
       icon: "pi-github",
     },
     {
-      link: "#",
+      link: "https://www.linkedin.com/in/nghia-nguyen-a76b74261/",
       icon: "pi-linkedin",
     },
   ],
 });
+
+const handleDownloadCV = async () => {
+  try {
+    const pdfUrl = "my_cv.pdf"; // Replace with the correct relative path to your PDF file
+    const response = await fetch(pdfUrl);
+    const blob = await response.blob();
+
+    // Create a temporary anchor element for download
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "Nguyen_Huu_Nghia_FontendDev";
+
+    // Trigger the download
+    link.click();
+  } catch (error) {
+    console.error("Error fetching or downloading the PDF file:", error);
+  }
+};
 
 onMounted(() => {
   new Typed(".multiple-text", {
@@ -46,11 +64,12 @@ onMounted(() => {
           :href="social.link"
           v-for="(social, i) in info.socials"
           :key="social.icon + i"
+          target="”_blank”"
         >
           <i :class="`pi ${social.icon}`" />
         </a>
       </div>
-      <span class="btn">Download CV</span>
+      <span class="btn" @click="handleDownloadCV">Download CV</span>
     </div>
     <div class="home-img">
       <div class="glowing-circle">
