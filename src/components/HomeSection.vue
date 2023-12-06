@@ -13,11 +13,11 @@ const info = reactive({
       icon: "pi-facebook",
     },
     {
-      link: "#",
+      link: "https://github.com/HuuNghia2807",
       icon: "pi-github",
     },
     {
-      link: "#",
+      link: "https://www.linkedin.com/in/nghia-nguyen-a76b74261/",
       icon: "pi-linkedin",
     },
   ],
